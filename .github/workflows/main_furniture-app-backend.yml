@@ -28,7 +28,7 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: java-app
-          path: '${{ github.workspace }}/back_web_furniture-0.0.1-SNAPSHOT.jar
+          path: '${{ github.workspace }}/back_web_furniture-0.0.1-SNAPSHOT.jar'
 
   deploy:
     runs-on: ubuntu-latest
