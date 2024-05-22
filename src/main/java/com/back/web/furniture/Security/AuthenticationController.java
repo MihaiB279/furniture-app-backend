@@ -16,13 +16,23 @@ import org.springframework.web.bind.annotation.RestController;
 public class AuthenticationController {
     private final AuthenticationService service;
     @PostMapping("/register_normal")
-    public ResponseEntity<AuthenticationResponse> registerNormal(@RequestBody RegisterRequest request){
-        return ResponseEntity.ok(service.register(request, Role.USER));
+    public ResponseEntity<?> registerNormal(@RequestBody RegisterRequest request){
+        try{
+            return ResponseEntity.ok(service.register(request, Role.USER));
+        }
+        catch (Exception ex){
+            return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
+        }
     }
 
     @PostMapping("/register_company")
-    public ResponseEntity<AuthenticationResponse> registerCompany(@RequestBody RegisterRequest request){
+    public ResponseEntity<?> registerCompany(@RequestBody RegisterRequest request){
+        try{
         return ResponseEntity.ok(service.register(request, Role.COMPANY));
+        }
+        catch (Exception ex){
+            return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
+        }
     }
     @PostMapping("/authenticate")
     public ResponseEntity<?> authenticate(@RequestBody AuthenticationRequest request){

@@ -1,14 +1,13 @@
 import sys
 
 from clustering import cluster_item
+from utils import check_all_no_preference
 
 INF = float('inf')
 
 
 def evaluation(furniture, positions, budget):
-    score = 0
     budget_furniture = 0
-    furniture_area = 0
     for i in range(len(positions)):
         furniture_add = furniture[list(furniture.keys())[i]][positions[i]]
         budget_furniture = budget_furniture + float(furniture_add['Price'])
@@ -38,5 +37,8 @@ def get_right_furniture(furniture_details):
                 furniture[name] = item
                 break
         if name not in furniture:
-            return name
+            if check_all_no_preference(furniture_details):
+                furniture[name] = furniture_available[0]
+            else:
+                return name
     return furniture

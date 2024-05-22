@@ -13,15 +13,24 @@ def get_list(string):
     return details_dict
 
 
+def check_all_no_preference(data):
+    for key, sub_dict in data.items():
+        if not all(value == 'No preferences' for value in sub_dict.values()):
+            return False
+    return True
+
+
 def get_index_off_generated(generated, available):
     list_indexes = []
     for single_list in generated:
         single_list_index = []
         for furniture_generated in single_list:
-            for index, furniture_available in enumerate(available[furniture_generated['furniture_type']]):
-                if furniture_available['Name'][1:] == furniture_generated['name'] and \
-                        furniture_available['Company'][1:] == furniture_generated['company']:
-                    single_list_index.append(index)
-                    break
-        list_indexes.append(single_list_index)
+            if furniture_generated['furniture_type'] in available:
+                for index, furniture_available in enumerate(available[furniture_generated['furniture_type']]):
+                    if furniture_available['Name'][1:] == furniture_generated['name'] and \
+                            furniture_available['Company'][1:] == furniture_generated['company']:
+                        single_list_index.append(index)
+                        break
+        if len(single_list_index) == len(single_list):
+            list_indexes.append(single_list_index)
     return list_indexes

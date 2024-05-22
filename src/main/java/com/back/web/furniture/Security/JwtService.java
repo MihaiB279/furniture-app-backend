@@ -40,11 +40,10 @@ public class JwtService {
                     .setClaims(extraClaims)
                     .setSubject(userDetails.getUsername())
                     .setIssuedAt(new Date(System.currentTimeMillis()))
-                    .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 24))
+                    .setExpiration(new Date(System.currentTimeMillis() + 1000 * 80 * 24))
                     .signWith(getSignInKey(), SignatureAlgorithm.HS256)
                     .compact();
         } catch (Exception e) {
-            // Log the exception or handle it as appropriate
             e.printStackTrace();
             throw new RuntimeException("Failed to generate token: " + e.getMessage());
         }

@@ -8,9 +8,11 @@ import com.back.web.furniture.Payment.PaymentType;
 import com.back.web.furniture.Payment.PaypalPayment;
 import com.back.web.furniture.Repository.RepositoryAddress;
 import com.back.web.furniture.Repository.RepositoryPaypalPayment;
+import com.back.web.furniture.Repository.RepositoryShoppingCart;
 import com.paypal.api.payments.*;
 import com.paypal.base.rest.APIContext;
 import com.paypal.base.rest.PayPalRESTException;
+import jakarta.transaction.Transactional;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -29,14 +31,17 @@ public class ServicePaypalImpl implements ServicePaypal{
     private APIContext apiContext;
     private RepositoryPaypalPayment repositoryPaypalPayment;
     private RepositoryAddress repositoryAddress;
+    private RepositoryShoppingCart repositoryShoppingCart;
     private ModelMapper modelMapper;
     @Autowired
-    public ServicePaypalImpl(APIContext apiContext, RepositoryPaypalPayment repositoryPaypalPayment, RepositoryAddress repositoryAddress, ModelMapper modelMapper){
+    public ServicePaypalImpl(APIContext apiContext, RepositoryPaypalPayment repositoryPaypalPayment, RepositoryAddress repositoryAddress, RepositoryShoppingCart repositoryShoppingCart, ModelMapper modelMapper){
         this.apiContext = apiContext;
         this.repositoryPaypalPayment = repositoryPaypalPayment;
         this.repositoryAddress = repositoryAddress;
+        this.repositoryShoppingCart = repositoryShoppingCart;
         this.modelMapper = modelMapper;
     }
+    @Transactional
     public Payment createCardPayment(
             PaypalPaymentDto paypalPaymentDto,
             String username,
@@ -72,7 +77,6 @@ public class ServicePaypalImpl implements ServicePaypal{
 
         payment.setRedirectUrls(redirectUrls);
 
-        //save in db
         PaypalPayment paypalPayment = new PaypalPayment();
         paypalPayment.setAmount(Double.valueOf(payment.getTransactions().get(0).getAmount().getTotal()));
         paypalPayment.setStatus(PaymentStatus.IN_PROCESS);
@@ -113,14 +117,17 @@ public class ServicePaypalImpl implements ServicePaypal{
         return payment.execute(apiContext, paymentExecution);
     }
 
+    @Transactional
     public PaypalPaymentDto saveCardPayment(String username, PaymentStatus status, ZonedDateTime date){
         PaypalPayment paypalPayment = repositoryPaypalPayment.findByUsernameAndStatus(username, PaymentStatus.IN_PROCESS);
         paypalPayment.setStatus(status);
         paypalPayment.setDateOfPayment(date);
         repositoryPaypalPayment.save(paypalPayment);
+        repositoryShoppingCart.deleteAllByUsername(username);
         return modelMapper.map(paypalPayment, PaypalPaymentDto.class);
     }
 
+    @Transactional
     @Override
     public PaypalPaymentDto saveCashPayment(String username, PaypalPaymentDto paypalPaymentDto) {
         PaypalPayment paypalPayment = modelMapper.map(paypalPaymentDto, PaypalPayment.class);
@@ -144,6 +151,7 @@ public class ServicePaypalImpl implements ServicePaypal{
         }
         paypalPayment.setDeliveryAddress(address);
         repositoryPaypalPayment.save(paypalPayment);
+        repositoryShoppingCart.deleteAllByUsername(username);
         return modelMapper.map(paypalPayment, PaypalPaymentDto.class);
     }
 

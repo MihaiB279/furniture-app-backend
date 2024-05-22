@@ -30,7 +30,6 @@ def find_furniture(furniture, already_generated, budget, population_size=300, no
         ga.oneGenerationElitism()
         # ga.oneGenerationSteadyState()
         best_chromosome = ga.bestChromosome()
-        #sys.stdout(str(best_chromosome.representation)+'\n')
         last_gens = ga.population
         if best_chromosome not in bests:
             bests.append(best_chromosome)

@@ -12,4 +12,5 @@ import java.util.UUID;
 public interface RepositoryShoppingCart extends JpaRepository<ShoppingCart, UUID> {
     public List<ShoppingCart> findAllByUsername(String username);
     public ShoppingCart findByUsernameAndFurniture(String username, Furniture furniture);
+    public void deleteAllByUsername(String username);
 }
