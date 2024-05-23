@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ToPythonScript {
-    private static String path = "C:\\Users\\MihaiBucur\\Desktop\\Licenta\\furniture-app-backend\\src\\main\\resources\\scripts\\main.py";
+    private static String path = "src/main/resources/scripts/main.py";
     public static Room toGenerateScript(Room room, List<List<Furniture>> alreadyGenerated) throws IOException {
         ProcessBuilder pb = new ProcessBuilder("python", path);
         pb.redirectErrorStream(true);
