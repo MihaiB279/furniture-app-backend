@@ -14,7 +14,7 @@ import java.util.List;
 import com.google.gson.Gson;
 
 public class PythonResourceCaller {
-    private static final String PYTHON_ENDPOINT = "http://https://furniture-app-model.azurewebsites.net/optimize/";
+    private static final String PYTHON_ENDPOINT = "https://furniture-app-model.azurewebsites.net/optimize/";
 
     public static Room toGenerateScript(Room room, List<List<Furniture>> alreadyGenerated, String jwt) throws IOException {
         Gson gson = new Gson();
