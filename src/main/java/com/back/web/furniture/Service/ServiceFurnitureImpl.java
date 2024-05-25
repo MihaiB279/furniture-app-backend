@@ -5,9 +5,9 @@ import com.back.web.furniture.Domain.Furniture.FurnitureAttributes;
 import com.back.web.furniture.Domain.Furniture.FurnitureType;
 import com.back.web.furniture.Domain.Furniture.Room;
 import com.back.web.furniture.Dto.*;
+import com.back.web.furniture.PythonModel.PythonResourceCaller;
 import com.back.web.furniture.Repository.RepositoryFurniture;
 import com.back.web.furniture.Repository.RepositoryFurnitureAttributes;
-import com.back.web.furniture.Utils.ToPythonScript;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -15,8 +15,6 @@ import org.springframework.stereotype.Service;
 import java.io.IOException;
 import java.util.*;
 import java.util.stream.Collectors;
-
-import static java.util.stream.Collectors.groupingBy;
 
 @Service
 public class ServiceFurnitureImpl implements ServiceFurniture {
@@ -32,7 +30,7 @@ public class ServiceFurnitureImpl implements ServiceFurniture {
     }
 
     @Override
-    public Map<String, RoomBackDto> generateFurniture(Map<String, RoomFrontDto> roomsDto) {
+    public Map<String, RoomBackDto> generateFurniture(Map<String, RoomFrontDto> roomsDto, String jwt) {
         Map<String, RoomBackDto> rooms = new HashMap<>();
         for (String key : roomsDto.keySet()) {
             RoomFrontDto value = roomsDto.get(key);
@@ -49,7 +47,7 @@ public class ServiceFurnitureImpl implements ServiceFurniture {
             }
             Room room = ServiceUtils.fromFrontRoomDtoToRoom(value);
             try {
-                Room finishedRoom = ToPythonScript.toGenerateScript(room, alreadyGenerated);
+                Room finishedRoom = PythonResourceCaller.toGenerateScript(room, alreadyGenerated, jwt);
                 rooms.put(key, modelMapper.map(finishedRoom, RoomBackDto.class));
             } catch (IOException e) {
                 System.out.println(e.getMessage());

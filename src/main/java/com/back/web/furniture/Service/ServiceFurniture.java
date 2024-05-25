@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.Map;
 
 public interface ServiceFurniture {
-    public Map<String, RoomBackDto> generateFurniture(Map<String, RoomFrontDto> roomsDto);
+    public Map<String, RoomBackDto> generateFurniture(Map<String, RoomFrontDto> roomsDto,  String jwt);
     public Map<String, Map<String, List<String>>> getFurnitureAttributes();
     public List<FurnitureBackDto> getFurnitureForCompany(String company);
     public FurnitureBackDto addFurniture(String company, FurnitureFrontDto furnitureFrontDto);

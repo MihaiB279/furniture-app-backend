@@ -11,6 +11,8 @@ import com.back.web.furniture.Service.ServiceFurniture;
 import com.back.web.furniture.Service.ServiceFurnitureImpl;
 import com.back.web.furniture.Service.ServiceUser;
 import com.back.web.furniture.Service.ServiceUserImpl;
+import jakarta.servlet.http.HttpServletRequest;
+import lombok.NonNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -37,13 +39,13 @@ public class ControllerFurniture {
     }
 
     @PostMapping("/generate")
-    public @ResponseBody ResponseEntity<?> generateFurnitureForRooms(@RequestBody Map<String, RoomFrontDto> rooms) {
+    public @ResponseBody ResponseEntity<?> generateFurnitureForRooms(@NonNull HttpServletRequest request, @RequestBody Map<String, RoomFrontDto> rooms) {
         try {
             Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
             UserDetails userDetails = (UserDetails) authentication.getPrincipal();
 
             if (ControllerUtils.checkRole(userDetails, Role.USER)) {
-                Map<String, RoomBackDto> furnitureGenerated = serviceFurniture.generateFurniture(rooms);
+                Map<String, RoomBackDto> furnitureGenerated = serviceFurniture.generateFurniture(rooms, request.getHeader("Authorization").substring(7));
                 return new ResponseEntity<>(furnitureGenerated, HttpStatus.OK);
             } else {
                 return new ResponseEntity<>("Access Denied", HttpStatus.FORBIDDEN);
