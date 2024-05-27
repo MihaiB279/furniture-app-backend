@@ -6,7 +6,7 @@ public enum FurnitureType {
     DINING,
     KITCHEN,
     RECLINER,
-    SHOWCASE,
+    SHOE_RACK,
     SOFA_BED,
     TV_UNIT
 }

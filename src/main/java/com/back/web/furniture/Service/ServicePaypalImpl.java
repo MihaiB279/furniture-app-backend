@@ -1,7 +1,6 @@
 package com.back.web.furniture.Service;
 
 import com.back.web.furniture.Domain.User.Address;
-import com.back.web.furniture.Dto.FurnitureBackDto;
 import com.back.web.furniture.Dto.PaypalPaymentDto;
 import com.back.web.furniture.Payment.PaymentStatus;
 import com.back.web.furniture.Payment.PaymentType;
@@ -169,6 +168,6 @@ public class ServicePaypalImpl implements ServicePaypal{
         List<PaypalPayment> payments = repositoryPaypalPayment.findByUsername(username);
         return payments.stream()
                 .map(payment -> modelMapper.map(payment, PaypalPaymentDto.class))
-                .collect(Collectors.toList());
+                .toList();
     }
 }

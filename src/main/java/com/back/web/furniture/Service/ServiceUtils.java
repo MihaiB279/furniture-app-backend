@@ -5,12 +5,16 @@ import com.back.web.furniture.Domain.Furniture.Room;
 import com.back.web.furniture.Domain.User.Address;
 import com.back.web.furniture.Dto.FurnitureFrontDto;
 import com.back.web.furniture.Dto.RoomFrontDto;
+import com.back.web.furniture.Exceptions.Messages;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
 public class ServiceUtils {
+    private ServiceUtils() {
+        throw new UnsupportedOperationException(Messages.INITIATE_CLASS_ERROR);
+    }
     static Furniture fromFrontDtoToFurniture(FurnitureFrontDto furnitureFrontDto){
         Furniture newFurniture = new Furniture();
         newFurniture.setFurnitureType(furnitureFrontDto.getFurnitureType());
@@ -18,8 +22,9 @@ public class ServiceUtils {
         newFurniture.setPrice(furnitureFrontDto.getPrice());
         Map<String, String> details = furnitureFrontDto.getDetails();
         String stringDetails = "";
-        for (String attribute : details.keySet()) {
-            String detail = details.get(attribute);
+        for (Map.Entry<String, String> entry : details.entrySet()) {
+            String attribute = entry.getKey();
+            String detail = entry.getValue();
             stringDetails += '\'' + attribute + ":" + detail + "\', ";
         }
         stringDetails = '[' + stringDetails.substring(0, stringDetails.length() - 2) + ']';

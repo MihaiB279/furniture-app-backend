@@ -2,7 +2,6 @@ package com.back.web.furniture.Service;
 
 import com.back.web.furniture.Dto.PaypalPaymentDto;
 import com.back.web.furniture.Payment.PaymentStatus;
-import com.back.web.furniture.Payment.PaypalPayment;
 import com.paypal.api.payments.*;
 import com.paypal.base.rest.PayPalRESTException;
 

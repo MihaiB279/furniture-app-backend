@@ -1,6 +1,7 @@
 package com.back.web.furniture.Security;
 
 import com.back.web.furniture.Domain.User.Role;
+import com.back.web.furniture.Exceptions.TokenException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -39,7 +40,7 @@ public class AuthenticationController {
         try {
             return ResponseEntity.ok(service.authenticate(request));
         }
-        catch (BadCredentialsException ex) {
+        catch (BadCredentialsException | TokenException ex) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid credentials. Please check your username and password.");
         }
     }

@@ -1,10 +1,8 @@
 package com.back.web.furniture.Controller;
 
-import com.back.web.furniture.Domain.Furniture.ShoppingCart;
 import com.back.web.furniture.Domain.User.Role;
 import com.back.web.furniture.Dto.*;
-import com.back.web.furniture.Service.ServiceFavourite;
-import com.back.web.furniture.Service.ServiceFavouriteImpl;
+import com.back.web.furniture.Exceptions.Messages;
 import com.back.web.furniture.Service.ServiceShoppingCart;
 import com.back.web.furniture.Service.ServiceShoppingCartImpl;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,7 +14,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Map;
 
 @CrossOrigin
 @RestController
@@ -38,7 +35,7 @@ public class ControllerShoppingCart {
                 serviceShoppingCart.addToShoppingCart(furnitureBackDto, userDetails.getUsername());
                 return new ResponseEntity<>("Added to shopping cart!", HttpStatus.OK);
             } else {
-                return new ResponseEntity<>("Access Denied", HttpStatus.FORBIDDEN);
+                return new ResponseEntity<>(Messages.ACCESS_DENIED, HttpStatus.FORBIDDEN);
             }
         } catch (Exception ex) {
             return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
@@ -55,7 +52,7 @@ public class ControllerShoppingCart {
                 List<ShoppingCartDto> favourites = serviceShoppingCart.getShoppingCart(userDetails.getUsername());
                 return new ResponseEntity<>(favourites, HttpStatus.OK);
             } else {
-                return new ResponseEntity<>("Access Denied", HttpStatus.FORBIDDEN);
+                return new ResponseEntity<>(Messages.ACCESS_DENIED, HttpStatus.FORBIDDEN);
             }
         } catch (Exception ex) {
             return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
@@ -72,7 +69,7 @@ public class ControllerShoppingCart {
                 serviceShoppingCart.deleteShoppingItem(userDetails.getUsername(), item);
                 return new ResponseEntity<>(item, HttpStatus.OK);
             } else {
-                return new ResponseEntity<>("Access Denied", HttpStatus.FORBIDDEN);
+                return new ResponseEntity<>(Messages.ACCESS_DENIED, HttpStatus.FORBIDDEN);
             }
         } catch (Exception ex) {
             return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);

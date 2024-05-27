@@ -1,11 +1,8 @@
 package com.back.web.furniture.Service;
 
-import com.back.web.furniture.Domain.Furniture.Favourite;
 import com.back.web.furniture.Domain.Furniture.Furniture;
 import com.back.web.furniture.Domain.Furniture.ShoppingCart;
-import com.back.web.furniture.Dto.FavouriteDto;
 import com.back.web.furniture.Dto.FurnitureBackDto;
-import com.back.web.furniture.Dto.FurnitureFrontDto;
 import com.back.web.furniture.Dto.ShoppingCartDto;
 import com.back.web.furniture.Repository.RepositoryFurniture;
 import com.back.web.furniture.Repository.RepositoryShoppingCart;
@@ -49,7 +46,7 @@ public class ServiceShoppingCartImpl implements ServiceShoppingCart{
         List<ShoppingCart> shoppingCarts = repositoryShoppingCart.findAllByUsername(username);
         return shoppingCarts.stream()
                 .map(item -> modelMapper.map(item, ShoppingCartDto.class))
-                .collect(Collectors.toList());
+                .toList();
     }
 
     @Override

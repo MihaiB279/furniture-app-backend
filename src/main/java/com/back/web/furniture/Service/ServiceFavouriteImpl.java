@@ -49,7 +49,7 @@ public class ServiceFavouriteImpl implements ServiceFavourite{
         List<Favourite> favourites = repositoryFavourites.findAllByUsername(username);
         return favourites.stream()
                 .map(item -> modelMapper.map(item, FavouriteDto.class))
-                .collect(Collectors.toList());
+                .toList();
     }
 
     @Override

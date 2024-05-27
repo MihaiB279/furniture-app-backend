@@ -4,7 +4,6 @@ import com.back.web.furniture.Domain.User.Address;
 import com.back.web.furniture.Domain.User.User;
 import com.back.web.furniture.Dto.UserDto;
 import com.back.web.furniture.Repository.RepositoryAddress;
-import com.back.web.furniture.Repository.RepositoryFurnitureAttributes;
 import com.back.web.furniture.Repository.RepositoryPaypalPayment;
 import com.back.web.furniture.Repository.RepositoryUser;
 import org.modelmapper.ModelMapper;

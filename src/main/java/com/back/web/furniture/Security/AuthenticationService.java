@@ -2,6 +2,10 @@ package com.back.web.furniture.Security;
 
 import com.back.web.furniture.Domain.User.Role;
 import com.back.web.furniture.Domain.User.User;
+import com.back.web.furniture.Exceptions.BaseException;
+import com.back.web.furniture.Exceptions.Messages;
+import com.back.web.furniture.Exceptions.RegisterException;
+import com.back.web.furniture.Exceptions.TokenException;
 import com.back.web.furniture.Repository.RepositoryUser;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -16,10 +20,10 @@ public class AuthenticationService {
     private final PasswordEncoder passwordEncoder;
     private final JwtService jwtService;
     private final AuthenticationManager authenticationManager;
-    public AuthenticationResponse register(RegisterRequest request, Role role) throws Exception {
+    public AuthenticationResponse register(RegisterRequest request, Role role) throws BaseException {
         User alreadyUser = repository.findByUsername(request.getUsername()).orElse(null);
         if(alreadyUser != null){
-            throw new Exception("Username already in use.");
+            throw new RegisterException(Messages.USERNAME_DUPLICATED);
         }
         User user = User.builder()
                 .firstName(request.getFirstName())
@@ -39,7 +43,7 @@ public class AuthenticationService {
                 .build();
     }
 
-    public AuthenticationResponse authenticate(AuthenticationRequest request) {
+    public AuthenticationResponse authenticate(AuthenticationRequest request) throws TokenException {
         authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
                         request.getUsername(),

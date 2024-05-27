@@ -2,6 +2,7 @@ package com.back.web.furniture.Controller;
 
 import com.back.web.furniture.Domain.User.Role;
 import com.back.web.furniture.Dto.PaypalPaymentDto;
+import com.back.web.furniture.Exceptions.Messages;
 import com.back.web.furniture.Payment.PaymentStatus;
 import com.back.web.furniture.Service.ServicePaypal;
 import com.paypal.api.payments.Links;
@@ -40,7 +41,7 @@ public class ControllerPaypal {
                 List<PaypalPaymentDto> paymentDtos = servicePaypalImpl.getPaymentsUser(userDetails.getUsername());
                 return new ResponseEntity<>(paymentDtos, HttpStatus.OK);
             } else {
-                return new ResponseEntity<>("Access Denied", HttpStatus.FORBIDDEN);
+                return new ResponseEntity<>(Messages.ACCESS_DENIED, HttpStatus.FORBIDDEN);
             }
         } catch (Exception ex) {
             return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
@@ -73,7 +74,7 @@ public class ControllerPaypal {
                     }
                 }
             } else {
-                return new ResponseEntity<>("Access Denied", HttpStatus.FORBIDDEN);
+                return new ResponseEntity<>(Messages.ACCESS_DENIED, HttpStatus.FORBIDDEN);
             }
         } catch (Exception ex) {
             return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
@@ -99,7 +100,7 @@ public class ControllerPaypal {
                 return new ResponseEntity<>(paypalPaymentDto, HttpStatus.OK);
             }
             else {
-                return new ResponseEntity<>("Access Denied", HttpStatus.FORBIDDEN);
+                return new ResponseEntity<>(Messages.ACCESS_DENIED, HttpStatus.FORBIDDEN);
             }
         } catch (Exception ex) {
             return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
@@ -117,7 +118,7 @@ public class ControllerPaypal {
                 return new ResponseEntity<>(payment, HttpStatus.OK);
             }
             else {
-                return new ResponseEntity<>("Access Denied", HttpStatus.FORBIDDEN);
+                return new ResponseEntity<>(Messages.ACCESS_DENIED, HttpStatus.FORBIDDEN);
             }
         } catch (Exception ex) {
             return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
@@ -135,7 +136,7 @@ public class ControllerPaypal {
                 return new ResponseEntity<>(paypalPaymentDto, HttpStatus.OK);
             }
             else {
-                return new ResponseEntity<>("Access Denied", HttpStatus.FORBIDDEN);
+                return new ResponseEntity<>(Messages.ACCESS_DENIED, HttpStatus.FORBIDDEN);
             }
         } catch (Exception ex) {
             return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);

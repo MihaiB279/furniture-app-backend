@@ -30,27 +30,28 @@ public class ServiceFurnitureImpl implements ServiceFurniture {
     }
 
     @Override
-    public Map<String, RoomBackDto> generateFurniture(Map<String, RoomFrontDto> roomsDto, String jwt) {
+    public Map<String, RoomBackDto> generateFurniture(Map<String, RoomFrontDto> roomsDto, String jwt) throws Exception {
         Map<String, RoomBackDto> rooms = new HashMap<>();
-        for (String key : roomsDto.keySet()) {
-            RoomFrontDto value = roomsDto.get(key);
+        for (Map.Entry<String, RoomFrontDto> entry : roomsDto.entrySet()) {
+            String key = entry.getKey();
+            RoomFrontDto value = entry.getValue();
             List<List<FurnitureBackDto>> alreadyGeneratedDto = value.getAlreadyGenerated();
             List<List<Furniture>> alreadyGenerated = null;
-            if(alreadyGeneratedDto!=null) {
+            if (alreadyGeneratedDto != null) {
                 alreadyGenerated = alreadyGeneratedDto.stream()
                         .map(subList ->
                                 subList.stream()
                                         .map(dto -> modelMapper.map(dto, Furniture.class))
                                         .toList()
                         )
-                        .collect(Collectors.toList());
+                        .toList();
             }
             Room room = ServiceUtils.fromFrontRoomDtoToRoom(value);
             try {
                 Room finishedRoom = PythonResourceCaller.toGenerateScript(room, alreadyGenerated, jwt);
                 rooms.put(key, modelMapper.map(finishedRoom, RoomBackDto.class));
             } catch (IOException e) {
-                System.out.println(e.getMessage());
+                throw new Exception(e.getMessage());
             }
         }
         return rooms;
@@ -74,18 +75,17 @@ public class ServiceFurnitureImpl implements ServiceFurniture {
         List<Furniture> furniture = repositoryFurniture.findAllByCompany(company);
         return furniture.stream()
                 .map(item -> modelMapper.map(item, FurnitureBackDto.class))
-                .collect(Collectors.toList());
+                .toList();
     }
 
     @Override
     public FurnitureBackDto addFurniture(String company, FurnitureFrontDto furnitureFrontDto) {
         Furniture furniture = ServiceUtils.fromFrontDtoToFurniture(furnitureFrontDto);
         furniture.setCompany(company);
-        try{
+        try {
             repositoryFurniture.save(furniture);
             return modelMapper.map(furniture, FurnitureBackDto.class);
-        }
-        catch (Exception e){
+        } catch (Exception e) {
             return null;
         }
     }
@@ -93,7 +93,7 @@ public class ServiceFurnitureImpl implements ServiceFurniture {
     @Override
     public FurnitureBackDto delete(String type, String name, String company) {
         Furniture furniture = repositoryFurniture.findByFurnitureTypeAndNameAndCompany(FurnitureType.valueOf(type), name, company);
-        if(furniture != null){
+        if (furniture != null) {
             repositoryFurniture.deleteById(furniture.getId());
             return modelMapper.map(furniture, FurnitureBackDto.class);
         }

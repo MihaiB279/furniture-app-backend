@@ -2,6 +2,7 @@ package com.back.web.furniture.PythonModel;
 
 import com.back.web.furniture.Domain.Furniture.Furniture;
 import com.back.web.furniture.Domain.Furniture.Room;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -11,9 +12,15 @@ import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
+
+import com.back.web.furniture.Exceptions.Messages;
 import com.google.gson.Gson;
 
 public class PythonResourceCaller {
+    private PythonResourceCaller() {
+        throw new UnsupportedOperationException(Messages.INITIATE_CLASS_ERROR);
+    }
+
     private static final String PYTHON_ENDPOINT = "https://furniture-app-model.azurewebsites.net/optimize/";
 
     public static Room toGenerateScript(Room room, List<List<Furniture>> alreadyGenerated, String jwt) throws IOException {
@@ -46,12 +53,12 @@ public class PythonResourceCaller {
         con.setRequestProperty("Authorization", "Bearer " + jwt);
         con.setDoOutput(true);
 
-        try(OutputStream os = con.getOutputStream()) {
+        try (OutputStream os = con.getOutputStream()) {
             byte[] input = jsonInputString.getBytes(StandardCharsets.UTF_8);
             os.write(input, 0, input.length);
         }
 
-        try(BufferedReader br = new BufferedReader(
+        try (BufferedReader br = new BufferedReader(
                 new InputStreamReader(con.getInputStream(), StandardCharsets.UTF_8))) {
             StringBuilder response = new StringBuilder();
             String responseLine = null;
@@ -68,8 +75,21 @@ public class PythonResourceCaller {
             doneRoom.setFurniture(List.of(newFurniture));
             doneRoom.setBudget(sum);
             return doneRoom;
-        } catch (Exception e) {
-            e.printStackTrace();
+        } catch (IOException e) {
+            if (con.getResponseCode() != HttpURLConnection.HTTP_OK) {
+                try (BufferedReader br = new BufferedReader(
+                        new InputStreamReader(con.getErrorStream(), StandardCharsets.UTF_8))) {
+                    String furnitureTypeNotFound = br.readLine();
+                    Room notGoodRoom = new Room();
+                    notGoodRoom.setBudget(-1);
+                    Furniture notGoodFurniture = new Furniture();
+                    notGoodFurniture.setName(furnitureTypeNotFound.split(":")[1]);
+                    List<Furniture> listNotGood = new ArrayList<>();
+                    listNotGood.add(notGoodFurniture);
+                    notGoodRoom.setFurniture(listNotGood);
+                    return notGoodRoom;
+                }
+            }
             throw new IOException("Error reading response", e);
         } finally {
             con.disconnect();

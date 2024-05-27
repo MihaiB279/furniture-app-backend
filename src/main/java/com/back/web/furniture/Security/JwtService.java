@@ -1,6 +1,8 @@
 package com.back.web.furniture.Security;
 
 import com.back.web.furniture.Domain.User.User;
+import com.back.web.furniture.Exceptions.Messages;
+import com.back.web.furniture.Exceptions.TokenException;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -28,13 +30,13 @@ public class JwtService {
         return claimsResolver.apply(claims);
     }
 
-    public String generateToken(UserDetails userDetails){
+    public String generateToken(UserDetails userDetails) throws TokenException {
         Map<String, Object> claims = new HashMap<>();
         claims.put("role", userDetails.getAuthorities());
         return generateToken(claims, userDetails);
     }
 
-    public String generateToken(Map<String, Object> extraClaims, UserDetails userDetails) {
+    public String generateToken(Map<String, Object> extraClaims, UserDetails userDetails) throws TokenException {
         try {
             return Jwts.builder()
                     .setClaims(extraClaims)
@@ -44,8 +46,7 @@ public class JwtService {
                     .signWith(getSignInKey(), SignatureAlgorithm.HS256)
                     .compact();
         } catch (Exception e) {
-            e.printStackTrace();
-            throw new RuntimeException("Failed to generate token: " + e.getMessage());
+            throw new TokenException(Messages.TOKEN_FAILURE);
         }
     }
 
