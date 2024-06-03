@@ -1,8 +1,8 @@
 package com.back.web.furniture.Dto;
 
+import com.back.web.furniture.Domain.Payment.PaymentStatus;
+import com.back.web.furniture.Domain.Payment.PaymentType;
 import com.back.web.furniture.Domain.User.Address;
-import com.back.web.furniture.Payment.PaymentStatus;
-import com.back.web.furniture.Payment.PaymentType;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 

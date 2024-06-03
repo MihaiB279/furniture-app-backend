@@ -1,10 +1,10 @@
 package com.back.web.furniture.Service;
 
+import com.back.web.furniture.Domain.Payment.PaymentStatus;
+import com.back.web.furniture.Domain.Payment.PaymentType;
+import com.back.web.furniture.Domain.Payment.PaypalPayment;
 import com.back.web.furniture.Domain.User.Address;
 import com.back.web.furniture.Dto.PaypalPaymentDto;
-import com.back.web.furniture.Payment.PaymentStatus;
-import com.back.web.furniture.Payment.PaymentType;
-import com.back.web.furniture.Payment.PaypalPayment;
 import com.back.web.furniture.Repository.RepositoryAddress;
 import com.back.web.furniture.Repository.RepositoryPaypalPayment;
 import com.back.web.furniture.Repository.RepositoryShoppingCart;
@@ -20,7 +20,6 @@ import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
-import java.util.stream.Collectors;
 
 import static com.back.web.furniture.Service.ServiceUtils.setAddressDetails;
 

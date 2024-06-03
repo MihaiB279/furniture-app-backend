@@ -1,4 +1,4 @@
-package com.back.web.furniture.Payment;
+package com.back.web.furniture.Domain.Payment;
 
 import com.back.web.furniture.Domain.User.Address;
 import jakarta.persistence.*;
@@ -19,7 +19,7 @@ public class PaypalPayment {
     @Column
     private String username;
     @Column
-    private Double amount;
+    private double amount;
     @Enumerated(EnumType.STRING)
     private PaymentStatus status;
     @Enumerated(EnumType.STRING)

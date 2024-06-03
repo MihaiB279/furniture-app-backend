@@ -21,7 +21,7 @@ public class Furniture {
     @Column
     private String name;
     @Column
-    private float price;
+    private double price;
     @Column(length = 500)
     private String details;
     @Column

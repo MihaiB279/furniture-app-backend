@@ -1,9 +1,9 @@
 package com.back.web.furniture.Controller;
 
+import com.back.web.furniture.Domain.Payment.PaymentStatus;
 import com.back.web.furniture.Domain.User.Role;
 import com.back.web.furniture.Dto.PaypalPaymentDto;
 import com.back.web.furniture.Exceptions.Messages;
-import com.back.web.furniture.Payment.PaymentStatus;
 import com.back.web.furniture.Service.ServicePaypal;
 import com.paypal.api.payments.Links;
 import com.paypal.api.payments.Payment;

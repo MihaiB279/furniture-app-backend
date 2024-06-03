@@ -1,4 +1,4 @@
-package com.back.web.furniture.Payment;
+package com.back.web.furniture.Config;
 
 import com.paypal.base.rest.APIContext;
 import org.springframework.beans.factory.annotation.Value;

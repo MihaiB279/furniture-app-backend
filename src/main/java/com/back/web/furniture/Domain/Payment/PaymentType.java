@@ -1,4 +1,4 @@
-package com.back.web.furniture.Payment;
+package com.back.web.furniture.Domain.Payment;
 
 public enum PaymentType {
     CASH,

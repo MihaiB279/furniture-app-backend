@@ -1,8 +1,8 @@
 package com.back.web.furniture.Repository;
 
+import com.back.web.furniture.Domain.Payment.PaymentStatus;
+import com.back.web.furniture.Domain.Payment.PaypalPayment;
 import com.back.web.furniture.Domain.User.Address;
-import com.back.web.furniture.Payment.PaymentStatus;
-import com.back.web.furniture.Payment.PaypalPayment;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
