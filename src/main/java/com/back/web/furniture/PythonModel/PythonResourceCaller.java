@@ -21,7 +21,7 @@ public class PythonResourceCaller {
         throw new UnsupportedOperationException(Messages.INITIATE_CLASS_ERROR);
     }
 
-    private static final String PYTHON_ENDPOINT = "https://furniture-app-model.azurewebsites.net/optimize/";
+    private static final String PYTHON_ENDPOINT = "https://app-furniture-model.azurewebsites.net/optimize/";
 
     public static Room toGenerateScript(Room room, List<List<Furniture>> alreadyGenerated, String jwt) throws IOException {
         Gson gson = new Gson();
