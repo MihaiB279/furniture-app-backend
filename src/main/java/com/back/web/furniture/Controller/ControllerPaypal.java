@@ -55,8 +55,8 @@ public class ControllerPaypal {
             UserDetails userDetails = (UserDetails) authentication.getPrincipal();
 
             if (ControllerUtils.checkRole(userDetails, Role.USER)) {
-                String cancelUrl = "http://localhost:8080/payment/cancel";
-                String successUrl = "http://localhost:8080/payment/success";
+                String cancelUrl = "https://www.buildyourhome.tech/payment/cancel";
+                String successUrl = "https://www.buildyourhome.tech/payment/success";
                 Payment payment = servicePaypalImpl.createCardPayment(
                         paypalPaymentDto,
                         userDetails.getUsername(),
