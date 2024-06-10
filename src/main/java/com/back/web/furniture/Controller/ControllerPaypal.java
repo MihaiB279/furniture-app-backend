@@ -7,6 +7,7 @@ import com.back.web.furniture.Exceptions.Messages;
 import com.back.web.furniture.Service.ServicePaypal;
 import com.paypal.api.payments.Links;
 import com.paypal.api.payments.Payment;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,15 +22,11 @@ import java.util.List;
 import java.util.Map;
 
 @RestController
+@RequiredArgsConstructor
 @RequestMapping("/api/payment")
 public class ControllerPaypal {
 
-    private ServicePaypal servicePaypalImpl;
-
-    @Autowired
-    public ControllerPaypal(ServicePaypal servicePaypalImpl) {
-        this.servicePaypalImpl = servicePaypalImpl;
-    }
+    private final ServicePaypal servicePaypalImpl;
 
     @GetMapping("/get")
     public  ResponseEntity<?> getPaymentsUser(){

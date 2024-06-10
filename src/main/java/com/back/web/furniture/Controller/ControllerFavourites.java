@@ -6,6 +6,7 @@ import com.back.web.furniture.Dto.RoomBackDto;
 import com.back.web.furniture.Exceptions.Messages;
 import com.back.web.furniture.Service.ServiceFavourite;
 import com.back.web.furniture.Service.ServiceFavouriteImpl;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,14 +20,10 @@ import java.util.Map;
 
 @CrossOrigin
 @RestController
+@RequiredArgsConstructor
 @RequestMapping("/api/favourite")
 public class ControllerFavourites {
-    protected ServiceFavourite serviceFavourite;
-    @Autowired
-    public ControllerFavourites(ServiceFavouriteImpl serviceFavourite){
-        this.serviceFavourite = serviceFavourite;
-    }
-
+    private final ServiceFavourite serviceFavourite;
     @PostMapping("/add")
     public @ResponseBody ResponseEntity<?> addToFavourite(@RequestBody Map<String, RoomBackDto> roomFrontDto){
         try {

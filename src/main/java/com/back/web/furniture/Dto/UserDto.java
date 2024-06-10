@@ -13,6 +13,6 @@ public class UserDto {
     private String firstName;
     private String lastName;
     private String phone;
-    private Address address;
+    private AddressDto address;
     private String company;
 }

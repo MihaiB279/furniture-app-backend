@@ -8,8 +8,8 @@ import com.back.web.furniture.Dto.*;
 import com.back.web.furniture.PythonModel.PythonResourceCaller;
 import com.back.web.furniture.Repository.RepositoryFurniture;
 import com.back.web.furniture.Repository.RepositoryFurnitureAttributes;
+import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
@@ -17,18 +17,11 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
+@RequiredArgsConstructor
 public class ServiceFurnitureImpl implements ServiceFurniture {
-    private RepositoryFurnitureAttributes repositoryFurnitureAttributes;
-    private RepositoryFurniture repositoryFurniture;
-    @Autowired
-    private ModelMapper modelMapper;
-
-    @Autowired
-    public ServiceFurnitureImpl(RepositoryFurnitureAttributes repositoryFurnitureAttributes, RepositoryFurniture repositoryFurniture) {
-        this.repositoryFurnitureAttributes = repositoryFurnitureAttributes;
-        this.repositoryFurniture = repositoryFurniture;
-    }
-
+    private final RepositoryFurnitureAttributes repositoryFurnitureAttributes;
+    private final RepositoryFurniture repositoryFurniture;
+    private final ModelMapper modelMapper;
     @Override
     public Map<String, RoomBackDto> generateFurniture(Map<String, RoomFrontDto> roomsDto, String jwt) throws Exception {
         Map<String, RoomBackDto> rooms = new HashMap<>();
@@ -62,10 +55,10 @@ public class ServiceFurnitureImpl implements ServiceFurniture {
         List<FurnitureAttributes> furniture = repositoryFurnitureAttributes.findAll();
         return furniture.stream()
                 .collect(Collectors.groupingBy(
-                        FurnitureAttributes::getName, // First level grouping by name
+                        FurnitureAttributes::getName,
                         Collectors.groupingBy(
-                                FurnitureAttributes::getAttribute, // Second level grouping by attribute
-                                Collectors.mapping(FurnitureAttributes::getValue, Collectors.toList()) // Mapping values to a list
+                                FurnitureAttributes::getAttribute,
+                                Collectors.mapping(FurnitureAttributes::getValue, Collectors.toList())
                         )
                 ));
     }
@@ -99,6 +92,8 @@ public class ServiceFurnitureImpl implements ServiceFurniture {
         }
         return null;
     }
-
-
+    @Override
+    public List<String> getCompanies() {
+        return repositoryFurniture.findDistinctCompanies();
+    }
 }

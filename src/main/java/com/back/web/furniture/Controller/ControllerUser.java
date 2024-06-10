@@ -4,6 +4,7 @@ import com.back.web.furniture.Domain.User.Role;
 import com.back.web.furniture.Dto.UserDto;
 import com.back.web.furniture.Service.ServiceUser;
 import com.back.web.furniture.Service.ServiceUserImpl;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -13,13 +14,10 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 @CrossOrigin
 @RestController
+@RequiredArgsConstructor
 @RequestMapping("/api/user")
 public class ControllerUser {
-    protected ServiceUser service;
-    @Autowired
-    public ControllerUser(ServiceUserImpl service){
-        this.service=service;
-    }
+    private final ServiceUser service;
     @GetMapping("/getProfile")
     public @ResponseBody ResponseEntity<?> getProfile(){
         try {

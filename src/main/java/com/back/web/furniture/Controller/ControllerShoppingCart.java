@@ -5,6 +5,7 @@ import com.back.web.furniture.Dto.*;
 import com.back.web.furniture.Exceptions.Messages;
 import com.back.web.furniture.Service.ServiceShoppingCart;
 import com.back.web.furniture.Service.ServiceShoppingCartImpl;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,14 +18,10 @@ import java.util.List;
 
 @CrossOrigin
 @RestController
+@RequiredArgsConstructor
 @RequestMapping("/api/shopping")
 public class ControllerShoppingCart {
-    protected ServiceShoppingCart serviceShoppingCart;
-    @Autowired
-    public ControllerShoppingCart(ServiceShoppingCartImpl serviceShoppingCart){
-        this.serviceShoppingCart = serviceShoppingCart;
-    }
-
+    private final ServiceShoppingCart serviceShoppingCart;
     @PostMapping("/add")
     public @ResponseBody ResponseEntity<?> addToShoppingCart(@RequestBody List<FurnitureBackDto> furnitureBackDto){
         try {

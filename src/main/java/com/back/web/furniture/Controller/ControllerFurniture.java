@@ -12,6 +12,7 @@ import com.back.web.furniture.Service.ServiceUser;
 import com.back.web.furniture.Service.ServiceUserImpl;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -25,16 +26,11 @@ import java.util.Map;
 
 @CrossOrigin
 @RestController
+@RequiredArgsConstructor
 @RequestMapping("/api/furniture")
 public class ControllerFurniture {
-    protected ServiceFurniture serviceFurniture;
-    protected ServiceUser serviceUser;
-
-    @Autowired
-    public ControllerFurniture(ServiceFurnitureImpl serviceFurniture, ServiceUserImpl serviceUser) {
-        this.serviceFurniture = serviceFurniture;
-        this.serviceUser = serviceUser;
-    }
+    private final ServiceFurniture serviceFurniture;
+    private final ServiceUser serviceUser;
 
     @PostMapping("/generate")
     public @ResponseBody ResponseEntity<?> generateFurnitureForRooms(@NonNull HttpServletRequest request, @RequestBody Map<String, RoomFrontDto> rooms) {

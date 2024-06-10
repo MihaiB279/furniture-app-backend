@@ -6,6 +6,7 @@ import com.back.web.furniture.Dto.FurnitureBackDto;
 import com.back.web.furniture.Dto.ShoppingCartDto;
 import com.back.web.furniture.Repository.RepositoryFurniture;
 import com.back.web.furniture.Repository.RepositoryShoppingCart;
+import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -14,20 +15,15 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
-public class ServiceShoppingCartImpl implements ServiceShoppingCart{
-    @Autowired
-    private ModelMapper modelMapper;
-    private RepositoryShoppingCart repositoryShoppingCart;
-    private RepositoryFurniture repositoryFurniture;
-    @Autowired
-    public ServiceShoppingCartImpl(RepositoryShoppingCart repositoryShoppingCart, RepositoryFurniture repositoryFurniture){
-        this.repositoryShoppingCart = repositoryShoppingCart;
-        this.repositoryFurniture = repositoryFurniture;
-    }
+@RequiredArgsConstructor
+public class ServiceShoppingCartImpl implements ServiceShoppingCart {
+    private final ModelMapper modelMapper;
+    private final RepositoryShoppingCart repositoryShoppingCart;
+    private final RepositoryFurniture repositoryFurniture;
 
     @Override
     public boolean addToShoppingCart(List<FurnitureBackDto> furnitureBackDto, String username) {
-        for(FurnitureBackDto furnitureBackDto1: furnitureBackDto) {
+        for (FurnitureBackDto furnitureBackDto1 : furnitureBackDto) {
             ShoppingCart shoppingCart = new ShoppingCart();
             Furniture furniture = repositoryFurniture.findByFurnitureTypeAndNameAndCompany(furnitureBackDto1.getFurnitureType(), furnitureBackDto1.getName(), furnitureBackDto1.getCompany());
             shoppingCart.setUsername(username);
@@ -52,7 +48,10 @@ public class ServiceShoppingCartImpl implements ServiceShoppingCart{
     @Override
     public void deleteShoppingItem(String username, ShoppingCartDto item) {
         Furniture furniture = repositoryFurniture.findByFurnitureTypeAndNameAndCompany(item.getFurniture().getFurnitureType(), item.getFurniture().getName(), item.getFurniture().getCompany());
-        ShoppingCart shoppingCart = repositoryShoppingCart.findByUsernameAndFurniture(username, furniture);
-        repositoryShoppingCart.deleteById(shoppingCart.getId());
+        List<ShoppingCart> shoppingCartList = repositoryShoppingCart.findAllByUsernameAndFurniture(username, furniture);
+        if (!shoppingCartList.isEmpty()) {
+            ShoppingCart shoppingCart = shoppingCartList.get(0);
+            repositoryShoppingCart.deleteById(shoppingCart.getId());
+        }
     }
 }

@@ -4,6 +4,7 @@ import com.back.web.furniture.Domain.Furniture.*;
 import com.back.web.furniture.Dto.*;
 import com.back.web.furniture.Repository.RepositoryFavourites;
 import com.back.web.furniture.Repository.RepositoryFurniture;
+import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -13,16 +14,11 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 @Service
+@RequiredArgsConstructor
 public class ServiceFavouriteImpl implements ServiceFavourite{
-    @Autowired
-    private ModelMapper modelMapper;
-    private RepositoryFavourites repositoryFavourites;
-    private RepositoryFurniture repositoryFurniture;
-    @Autowired
-    public ServiceFavouriteImpl(RepositoryFavourites repositoryFavourites, RepositoryFurniture repositoryFurniture) {
-        this.repositoryFavourites = repositoryFavourites;
-        this.repositoryFurniture = repositoryFurniture;
-    }
+    private final ModelMapper modelMapper;
+    private final RepositoryFavourites repositoryFavourites;
+    private final RepositoryFurniture repositoryFurniture;
     @Override
     public boolean addToFavourite(Map<String, RoomBackDto> roomBackDtoMap, String username) {
         String name = roomBackDtoMap.keySet().toString();

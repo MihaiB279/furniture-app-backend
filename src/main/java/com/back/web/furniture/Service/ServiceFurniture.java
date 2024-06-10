@@ -13,6 +13,6 @@ public interface ServiceFurniture {
     public Map<String, Map<String, List<String>>> getFurnitureAttributes();
     public List<FurnitureBackDto> getFurnitureForCompany(String company);
     public FurnitureBackDto addFurniture(String company, FurnitureFrontDto furnitureFrontDto);
-
-    FurnitureBackDto delete(String type, String name, String company);
+    public FurnitureBackDto delete(String type, String name, String company);
+    public List<String> getCompanies();
 }

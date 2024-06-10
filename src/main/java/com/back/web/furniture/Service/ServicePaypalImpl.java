@@ -12,6 +12,7 @@ import com.paypal.api.payments.*;
 import com.paypal.base.rest.APIContext;
 import com.paypal.base.rest.PayPalRESTException;
 import jakarta.transaction.Transactional;
+import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -24,21 +25,13 @@ import java.util.Locale;
 import static com.back.web.furniture.Service.ServiceUtils.setAddressDetails;
 
 @Service
+@RequiredArgsConstructor
 public class ServicePaypalImpl implements ServicePaypal{
-
-    private APIContext apiContext;
-    private RepositoryPaypalPayment repositoryPaypalPayment;
-    private RepositoryAddress repositoryAddress;
-    private RepositoryShoppingCart repositoryShoppingCart;
-    private ModelMapper modelMapper;
-    @Autowired
-    public ServicePaypalImpl(APIContext apiContext, RepositoryPaypalPayment repositoryPaypalPayment, RepositoryAddress repositoryAddress, RepositoryShoppingCart repositoryShoppingCart, ModelMapper modelMapper){
-        this.apiContext = apiContext;
-        this.repositoryPaypalPayment = repositoryPaypalPayment;
-        this.repositoryAddress = repositoryAddress;
-        this.repositoryShoppingCart = repositoryShoppingCart;
-        this.modelMapper = modelMapper;
-    }
+    private final APIContext apiContext;
+    private final RepositoryPaypalPayment repositoryPaypalPayment;
+    private final RepositoryAddress repositoryAddress;
+    private final RepositoryShoppingCart repositoryShoppingCart;
+    private final ModelMapper modelMapper;
     @Transactional
     public Payment createCardPayment(
             PaypalPaymentDto paypalPaymentDto,
@@ -91,7 +84,7 @@ public class ServicePaypalImpl implements ServicePaypal{
         );
         if(address == null) {
             address = new Address();
-            setAddressDetails(address, paypalPaymentDto.getDeliveryAddress());
+            setAddressDetails(address, modelMapper.map(paypalPaymentDto.getDeliveryAddress(), Address.class));
             repositoryAddress.save(address);
         }
 
@@ -144,7 +137,7 @@ public class ServicePaypalImpl implements ServicePaypal{
         );
         if(address == null) {
             address = new Address();
-            setAddressDetails(address, paypalPaymentDto.getDeliveryAddress());
+            setAddressDetails(address, modelMapper.map(paypalPaymentDto.getDeliveryAddress(), Address.class));
             repositoryAddress.save(address);
         }
         paypalPayment.setDeliveryAddress(address);

@@ -15,5 +15,5 @@ public class PaypalPaymentDto {
     private PaymentStatus status;
     private PaymentType paymentType;
     private ZonedDateTime dateOfPayment;
-    private Address deliveryAddress;
+    private AddressDto deliveryAddress;
 }
